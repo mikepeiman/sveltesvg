@@ -1,3 +1,9 @@
+# My first project exploring Svelte.js
+## By Mike Peiman
+Learning this cool compiler-framework for building performant JS apps. Exploring generating SVGs to begin with.
+
+---
+
 *Psst — looking for a shareable component template? Go here --> [sveltejs/component-template](https://github.com/sveltejs/component-template)*
 
 ---
