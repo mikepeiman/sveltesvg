@@ -15,4 +15,4 @@
 
 <Card headline="This is a card component." />
 <Card headline="No, this is!" />
-<Element headline="Click inside here to set origin." bg="rgba(255,55,0,1)" />
+<Element headline="Click inside here to generate a polygon" bg="rgba(255,55,0,1)" />
