@@ -32,7 +32,7 @@
     function build(arg) {
       let res = [];
       for (let i = 0, l = arg.length; i < l; i++) {
-        console.log(`inside of Polygon.build(): res ${res}`)
+        console.log(`inside of Polygon.build(): res ${res}`);
         res.push(arg[i].join(","));
       }
       return res.join(" ");
@@ -60,7 +60,7 @@
           } and pointsList: ${pointsList}`
         );
         if (points[i + 1] !== undefined) {
-          pointsList.push([points[i],points[i + 1]]);
+          pointsList.push([points[i], points[i + 1]]);
         }
       }
       this.attribute("points", build(pointsList));
@@ -72,9 +72,11 @@
   function findPolygonPoint(x, y, svgElement, points, distance, iteration) {
     let svg = svgElement;
     let polygon = svg.childNodes[0];
-    let angle = 360 / points * iteration;
+    let angle = (360 / points) * iteration;
 
-    console.log(`angle: ${angle} x ${x}, y ${y}, svgElement ${svgElement}, points ${points}, distance ${distance}, iteration ${iteration}`);
+    console.log(
+      `angle: ${angle} x ${x}, y ${y}, svgElement ${svgElement}, points ${points}, distance ${distance}, iteration ${iteration}`
+    );
     let result = {};
     let newX = Math.round(Math.cos((angle * Math.PI) / 180) * distance + x);
     let newY = Math.round(Math.sin((angle * Math.PI) / 180) * distance + y);
@@ -86,7 +88,7 @@
     result.y = y;
     polygonPointsArray = [...polygonPointsArray, [x, y]];
     console.log(`x ${x} and y ${y}: newX ${newX}, newY ${newY}`);
-    console.log(`polygonPointsArray = ${polygonPointsArray}`)
+    console.log(`polygonPointsArray = ${polygonPointsArray}`);
     let point = svg.createSVGPoint();
     point.x = x;
     point.y = y;
@@ -101,13 +103,13 @@
     let iteration = points;
 
     // code to generate svg centered on click
-    let rect = e.target.getBoundingClientRect()
-    x = e.x-rect.left - distance/2;
-    y = e.y-rect.top + distance;
+    let rect = e.target.getBoundingClientRect();
+    x = e.x - rect.left - distance / 2;
+    y = e.y - rect.top + distance;
     // end code to generate svg centered on click
 
     console.log(`getOrigin x ${x}, y ${y}, and e:`);
-    console.log(e)
+    console.log(e);
 
     console.log(`inside getOrigin for loop: findPolygon returns: `);
     findPolygonPoint(x, y, svg, points, distance, iteration);
@@ -117,6 +119,23 @@
 
     let penta = new Polygon();
     penta.points(polygonPointsArray, polygonPointsArray.length);
+
+    let elX = svg.parentNode.offsetWidth;
+    let elY = svg.parentNode.offsetHeight;
+    let hueFactorX = (360 / elX).toFixed(2);
+    let hueFactorY = (360 / elY).toFixed(2);
+    let aFactorY = (1 / elY).toFixed(5);
+    let hueX = x * hueFactorX;
+    let hueY = y * hueFactorY;
+    let alphaY = (y * aFactorY).toFixed(2);
+    console.log(`alpha factor: ${aFactorY}, alphaY ${alphaY}`);
+    
+    penta.attribute("fill", `hsla(${hueX},100%,50%,${alphaY})`);
+    console.log(
+      `!!!!!!!!!!!!!!!!!!!!!!!!!!!!! svg parent width ${elX} ${hueFactorX}, ${elY} ${hueFactorY}`
+    );
+    console.log(`!!!!!!!!!!!!!!!!!!!!!!!!!!!!! hueX ${hueX} hueY ${hueY}`);
+
     console.log(polygonPointsArray.length);
     console.log("penta");
     console.log(penta);
@@ -129,12 +148,13 @@
 
 <style>
   .svg-card {
-    background: rgba(75, 125, 175, 0.75);
+    background: none;
     position: relative;
     color: white;
     padding: 2rem;
     margin: 2rem;
     width: 50%;
+    height: 20vh;
     justify-self: center;
     align-self: center;
     /* border: 2px solid rgba(75,95,255,0.5); */
@@ -152,17 +172,17 @@
     height: 100%;
     top: 0;
     left: 0;
+    z-index: -1;
   }
 
   #pentagon {
     fill: rgba(75, 125, 175, 0.75);
-    stroke: rgba(75, 125, 175, 1);;
+    stroke: rgba(75, 125, 175, 1);
     stroke-width: 5;
   }
 </style>
 
 <div class="svg-card" on:click={getOrigin}>
-  <h1 class="headline">{headline}</h1>
   <svg id="pentagon" />
   <!-- <svg height="210" width="500">
     <polygon
