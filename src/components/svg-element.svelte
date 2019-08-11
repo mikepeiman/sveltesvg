@@ -7,7 +7,7 @@
   $: y = 0;
   let points = 5;
   $: polygonPointsArray = [];
-  let distance = 60;
+  let distance = 20;
 
   onMount(() => {
     // let svg = document.getElementById("pentagon");
@@ -170,7 +170,7 @@
     text-align: center;
   }
 
-  svg {
+  svg polygon {
     stroke: black;
     position: absolute;
     width: 100%;
