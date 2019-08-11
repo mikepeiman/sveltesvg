@@ -18,7 +18,7 @@
   });
 
   onMount(() => {
-    let svg = document.getElementById("pentagon");
+    let svg = document.getElementById("pentagons");
     let polygon = document.createElementNS(
       "http://www.w3.org/2000/svg",
       "polygon"
@@ -28,7 +28,7 @@
   });
 
   export function createPolygonAtClick(e) {
-    let svg = document.getElementById("pentagon");
+    let svg = document.getElementById("pentagons");
     let polygon = svg.childNodes[0];
     coords.set([])
     // polygonPointsArray = [];
@@ -126,7 +126,7 @@
     z-index: -1;
   }
 
-  #pentagon {
+  #pentagons {
     fill: rgba(75, 125, 175, 0.75);
     stroke: rgba(75, 125, 175, 1);
     stroke-width: 5;
@@ -134,7 +134,7 @@
 </style>
 
 <div class="svg-card" on:click={createPolygonAtClick}>
-  <svg id="pentagon" />
+  <svg id="pentagons" />
   <!-- <svg height="210" width="500">
     <polygon
       points="200,10 892,496 250,190 160,210 "
