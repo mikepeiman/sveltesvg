@@ -30,6 +30,7 @@
   export function createPolygonAtClick(e) {
     let svg = document.getElementById("pentagon");
     let polygon = svg.childNodes[0];
+    coords.set([])
     // polygonPointsArray = [];
     let iteration = points;
 
