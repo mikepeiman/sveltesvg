@@ -9,7 +9,7 @@
   $: x = 0;
   $: y = 0;
   let points = 5;
-  let distance = 60;
+  let distance = 140;
   // let polygonPointsArray = []
 
   let polygonPointsArray;
