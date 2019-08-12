@@ -19,7 +19,6 @@
       }
       result.x = x;
       result.y = y;
-      // polygonPointsArray = [...polygonPointsArray, [x, y]];
       console.log(`x ${x} and y ${y}: newX ${newX}, newY ${newY}`);
       console.log(`polygonPointsArray = ${polygonPointsArray}`);
       console.log(polygonPointsArray);
@@ -27,9 +26,7 @@
       let point = svg.createSVGPoint();
       point.x = x;
       point.y = y;
-      // polygonPointsArray.update(arr => [...arr, point]);
       polygonPointsArray = [...polygonPointsArray, point]
       findPolygonPoint(newX, newY, svg, points, distance, iteration - 1, polygonPointsArray);
-      // return result;
     }
 </script>

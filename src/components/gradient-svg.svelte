@@ -5,6 +5,16 @@
   import { Polygon } from "./polygon.js";
   import { findPolygonPoint } from "./findPolygonPoint.svelte";
   import { writable } from "svelte/store";
+
+  function getBounds(e) {
+    console.log(`e.EventTarget: ${e.target}`);
+    let bounds = e.target.getBoundingClientRect()
+    let w = parseFloat((bounds.width).toFixed(5))
+    let h = parseFloat((bounds.height).toFixed(5))
+    console.log(w,h);
+    
+    
+  }
 </script>
 
 <style>
@@ -33,7 +43,7 @@
     height: 100%;
     top: 0;
     left: 0;
-    z-index: -1;
+    /* z-index: -1; */
   }
 
   polygon {
@@ -54,7 +64,7 @@
 
 <div class="svg-card">
 
-  <svg height="500" width="500" id="pentagon">
+  <svg viewBox="0 0 500 250" preserveAspectRatio="none" height="100%" width="100%" id="pentagon" on:click="{getBounds}">
     <defs>
       <!-- <radialGradient
         id="gradientRad1"
@@ -125,35 +135,35 @@
 
       <polygon
         id="polygon-fire"
-        transform="rotate(0)"
+        transform="rotate(0 0 0)"
         transform-origin="center"
         points="347.1999816894531,249.25,487,249 487,249,530,116 530,116,417,34
         417,34,304,116"
         fill="url(#fire)" />
       <polygon
         id="polygon-earth"
-        transform="rotate(72)"
+        transform="rotate(72 0 0)"
         transform-origin="center"
         points="347.1999816894531,249.25,487,249 487,249,530,116 530,116,417,34
         417,34,304,116"
         fill="url(#earth)" />
       <polygon
         id="polygon-metal"
-        transform="rotate(144)"
+        transform="rotate(144 0 0)"
         transform-origin="center"
         points="347.1999816894531,249.25,487,249 487,249,530,116 530,116,417,34
         417,34,304,116"
         fill="url(#metal)" />
       <polygon
         id="polygon-water"
-        transform="rotate(216)"
+        transform="rotate(216 0 0)"
         transform-origin="center"
         points="347.1999816894531,249.25,487,249 487,249,530,116 530,116,417,34
         417,34,304,116"
         fill="url(#water)" />
       <polygon
         id="polygon-wood"
-        transform="rotate(288)"
+        transform="rotate(288 0 0)"
         transform-origin="center"
         points="347.1999816894531,249.25,487,249 487,249,530,116 530,116,417,34
         417,34,304,116"
@@ -199,7 +209,9 @@ width="100%" height="100%"/>
       id="pentagon-1"
       points="347.1999816894531,249.25,487,249 487,249,530,116 530,116,417,34
       417,34,304,116"
-      filter="url(#blend-it)" />
+      filter="url(#blend-it)"
+      cx="0"
+      cy="0" />
 
   </svg>
 </div>
