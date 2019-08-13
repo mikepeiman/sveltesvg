@@ -25,6 +25,10 @@
     console.log("mounted");
   });
 
+  function toDegrees(angle) {
+    return angle * (180 / Math.PI)
+  }
+
   export function createPolygonAtClick(e) {
     let svg = document.getElementById("pentagons");
     let polygon = svg.childNodes[0];
@@ -34,17 +38,41 @@
 
     // code to generate svg centered on click
     let rect = e.target.getBoundingClientRect();
-    x = e.x - rect.left - distance / 2;
-    y = e.y - rect.top + distance;
+    // x = e.x - rect.left - distance / 2;
+    // y = e.y - rect.top + distance;
+    x = e.x - rect.left;
+    y = e.y - rect.top;
+    let radius = distance / (2 * Math.sin(toDegrees(180)));
+    console.log(`Math.sin(toDegrees(180 / 5)): ${Math.sin(toDegrees(180))}`);
+    
+    // let radius = (distance / 1.17557);
+    // let newX = Math.round(Math.cos((-90 * Math.PI) / 180) * radius + x);
+    let newX = x
+    let newY = y - radius;
+
     // end code to generate svg centered on click
 
-    console.log(`createPolygonAtClick x ${x}, y ${y}, and e:`);
+    console.log(`createPolygonAtClick:
+     target.x ${e.x} target.y ${e.y} 
+     radius ${radius}
+     calculated x ${x} calculated y ${y}
+     newX ${newX} newY ${newY}
+     and e:`);
+    // confirmed my calculated x and y are at click relative to parent .svg-card
     console.log(e);
     let pushed = [];
     // console.log(`inside createPolygonAtClick for loop: findPolygonPoint returns: `);
+
+    console.log(`radius !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!: ${radius}`);
+    let peak = [x, y + radius];
+    console.log(`peak !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!: ${peak}`);
+    let centerX = Math.round(Math.cos((90 * Math.PI) / 180) * radius + x);
+    let centerY = Math.round(Math.sin((90 * Math.PI) / 180) * radius + y);
+
+    console.log(`center: ${centerX} ${centerY}`);
     findPolygonPoint(
-      x,
-      y,
+      newX,
+      newY,
       svg,
       points,
       distance,
@@ -53,12 +81,12 @@
       pushed
     );
 
-    console.log("polygonPointsArray");
-    console.log(polygonPointsArray);
+    // console.log("polygonPointsArray");
+    // console.log(polygonPointsArray);
     polygonPointsArray.forEach(point => {
-      console.log(`point: ${point}`);
-      console.log(point);
-      console.log(`${point.x},${point.y}`);
+      // console.log(`point: ${point}`);
+      // console.log(point);
+      // console.log(`${point.x},${point.y}`);
     });
 
     let mapped = polygonPointsArray.map(point => [`${point.x},${point.y}`]);
@@ -106,24 +134,26 @@
     };
     console.log(center(pushed));
     let centerPoint = center(pushed);
-      const hoverRotate = css`
-    transform: rotate(0deg);
-    -ms-transform-origin: ${centerPoint[0]}px ${centerPoint[1]}px;
-    -webkit-transform-origin: ${centerPoint[0]}px ${centerPoint[1]}px;
-    transform: ${centerPoint[0]}px ${centerPoint[1]}px;
-    transition: all 0.25s;
-    &:hover {
-      transform: rotate(72deg);
-      -ms-transform-origin: ${centerPoint[0]}px ${centerPoint[1]}px;
-      -webkit-transform-origin: ${centerPoint[0]}px ${centerPoint[1]}px;
-      transform: ${centerPoint[0]}px ${centerPoint[1]}px;
-    }
-  `;
-    penta.attribute("cx", `${centerPoint[0]}`);
-    penta.attribute("cy", `${centerPoint[1]}`);
+    newY = newY + radius;
+    const hoverRotate = css`
+      transform: rotate(0deg);
+      -ms-transform-origin: ${newX}px ${newY}px;
+      -webkit-transform-origin: ${newX}px ${newY}px;
+      transform: ${newX}px ${newY}px;
+      transition: all 0.25s;
+      &:hover {
+        transform: rotate(72deg);
+        -ms-transform-origin: ${newX}px ${newY}px;
+        -webkit-transform-origin: ${newX}px ${newY}px;
+        transform: ${newX}px ${newY}px;
+      }
+    `;
+    //          
+    penta.attribute("cx", `${newX}`);
+    penta.attribute("cy", `${newY}`);
     penta.attribute("id", "testID");
     penta.attribute("class", `${hoverRotate}`);
-    console.log(`penta center: ${centerPoint[0]}`);
+    console.log(`penta center: ${newX}`);
 
     console.log(penta.center);
   }
@@ -145,6 +175,7 @@
     box-shadow: 0px 0px 2px 2px rgba(0, 0, 0, 0.75);
     & svg {
       transition: all 0.25s;
+      // z-index: -1;
       & polygon {
         transform: rotate(0deg);
       }
@@ -177,10 +208,6 @@
     & polygon {
       transform: rotate(0deg);
     }
-  }
-
-  svg:hover polygon {
-    transform: rotate(72deg);
   }
 
   #pentagons {

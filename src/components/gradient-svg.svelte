@@ -26,30 +26,12 @@
     padding: 2rem;
     margin: 2rem;
     width: 50%;
-    height: 20vh;
+    height: 250px;
     justify-self: center;
     align-self: center;
     /* border: 2px solid rgba(75,95,255,0.5); */
     border: 1px solid black;
     box-shadow: 0px 0px 2px 2px rgba(0, 0, 0, 0.75);
-    & svg {
-      transition: all .25s;
-      & polygon {
-        transform: rotate(0deg);
-
-      }
-    }
-    &:hover svg {
-      stroke: red;
-      stroke-width: 10;
-      
-      &polygon {
-        transform: rotate(72deg);
-                &:hover {
-          stroke-width: 1;
-        }
-      }
-    }
   }
   h1 {
     text-align: center;
@@ -66,7 +48,7 @@
   }
 
   polygon {
-        position: absolute;
+    position: absolute;
     width: 100%;
     height: 100%;
     top: 0;
