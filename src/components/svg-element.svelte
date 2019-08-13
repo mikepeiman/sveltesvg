@@ -12,7 +12,7 @@
   $: x = 0;
   $: y = 0;
   let points = 5;
-  let distance = 500;
+  let distance = 150;
   // let polygonPointsArray = []
   let origin;
 
@@ -33,10 +33,14 @@
   export function createPolygonAtClick(e) {
     console.log(e);
 
+    let svg = document.getElementById("pentagons");
+    let polygon = svg.childNodes[0];
+    polygonPoints.set([]);
+    let iteration = points;
 
-// Mouse position in parent element regardless of clicking on children
-// code copied from this https://stackoverflow.com/questions/16154857/how-can-i-get-the-mouse-coordinates-relative-to-a-parent-div-javascript
-// thanks to GitaarLAB
+    // Mouse position in parent element regardless of clicking on children
+    // code copied from this https://stackoverflow.com/questions/16154857/how-can-i-get-the-mouse-coordinates-relative-to-a-parent-div-javascript
+    // thanks to GitaarLAB
 
     var m_posx = 0,
       m_posy = 0,
@@ -71,28 +75,18 @@
     let click = [];
     click[0] = m_posx - e_posx;
     click[1] = m_posy - e_posy;
+    x = click[0];
+    y = click[1];
 
-// end code from https://stackoverflow.com/questions/16154857/how-can-i-get-the-mouse-coordinates-relative-to-a-parent-div-javascript
-
-    // let node = e.target.nodeName;
-
-    // if (node === "polygon") {
-    //   e = e.target.parentNode;
-    // }
-
-    let svg = document.getElementById("pentagons");
-    let polygon = svg.childNodes[0];
-    polygonPoints.set([]);
-    let iteration = points;
+    // end code from https://stackoverflow.com/questions/16154857/how-can-i-get-the-mouse-coordinates-relative-to-a-parent-div-javascript
 
     // let rect = e.target.getBoundingClientRect();
     // x = e.x - rect.left;
     // y = e.y - rect.top;
-    x = click[0]
-    y = click[1]
+
     let radius = distance / (2 * Math.sin(toDegrees(180)));
     let newX = x;
-    let newY = y - radius;
+    let newY = Math.round(y - radius + (distance / 40));
 
     console.log(`createPolygonAtClick:
      target.x ${e.x} target.y ${e.y} 
@@ -126,6 +120,8 @@
     console.log(`pushed: ${pushed}`);
 
     let penta = new Polygon();
+    console.log(`mapped.length: ${mapped.length}`);
+    
     penta.points(mapped, mapped.length);
 
     let elX = svg.parentNode.offsetWidth;
@@ -142,7 +138,7 @@
     console.log(`mapped: ${mapped}`);
 
     // newX = newX - 5
-    newY = newY + radius - (distance/40);
+    newY = newY + radius - distance / 40;
     const hoverRotate = css`
       transform: rotate(0deg);
       -ms-transform-origin: ${newX}px ${newY}px;

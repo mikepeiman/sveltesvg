@@ -15,6 +15,9 @@
       angle += angle;
       if (iteration <= 0) {
         console.log(`base condition of findPolygonPoint: array ${polygonPointsArray}`);
+        console.log(polygonPointsArray);
+        
+        
         polygonPoints.set(polygonPointsArray)
         return polygonPointsArray;
       }
