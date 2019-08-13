@@ -5,16 +5,9 @@
   import { Polygon } from "./polygon.js";
   import { findPolygonPoint } from "./findPolygonPoint.svelte";
   import { writable } from "svelte/store";
-import emotion from 'emotion/dist/emotion.umd.min.js';
+  import emotion from "emotion/dist/emotion.umd.min.js";
 
-const { css } = emotion;
-
-export const hoverRotate = css`
-  transform: rotate(0deg);
-  transition: all .25s;
-  &:hover {
-    transform: rotate(72deg);
-    }`
+  const { css } = emotion;
 
   $: x = 0;
   $: y = 0;
@@ -30,13 +23,12 @@ export const hoverRotate = css`
   onMount(() => {
     let svg = document.getElementById("pentagons");
     console.log("mounted");
-
   });
 
   export function createPolygonAtClick(e) {
     let svg = document.getElementById("pentagons");
     let polygon = svg.childNodes[0];
-    coords.set([])
+    coords.set([]);
     // polygonPointsArray = [];
     let iteration = points;
 
@@ -48,7 +40,7 @@ export const hoverRotate = css`
 
     console.log(`createPolygonAtClick x ${x}, y ${y}, and e:`);
     console.log(e);
-  let pushed = []
+    let pushed = [];
     // console.log(`inside createPolygonAtClick for loop: findPolygonPoint returns: `);
     findPolygonPoint(
       x,
@@ -67,20 +59,15 @@ export const hoverRotate = css`
       console.log(`point: ${point}`);
       console.log(point);
       console.log(`${point.x},${point.y}`);
-      
-      
-      
-    })
-  
-    
-    let mapped = polygonPointsArray.map(point => [`${point.x},${point.y}`])
+    });
+
+    let mapped = polygonPointsArray.map(point => [`${point.x},${point.y}`]);
     console.log(`mapped: ${mapped}`);
     console.log(`pushed: ${pushed}`);
-    
 
     let penta = new Polygon();
     // penta.points(polygonPointsArray, polygonPointsArray.length);
-    penta.points(mapped, mapped.length)
+    penta.points(mapped, mapped.length);
 
     let elX = svg.parentNode.offsetWidth;
     let elY = svg.parentNode.offsetHeight;
@@ -102,36 +89,44 @@ export const hoverRotate = css`
     // console.log(penta);
     svg.appendChild(penta.node);
     console.log(`mapped: ${mapped}`);
-    
-console.log(mapped)
-console.log(pushed)
+
+    console.log(mapped);
+    console.log(pushed);
     // console.log("penta.points");
     // console.log(penta.points);
-        var center = function (arr)
-{
-    var minX, maxX, minY, maxY;
-    for (var i = 0; i < arr.length; i++)
-    {
-        minX = (arr[i][0] < minX || minX == null) ? arr[i][0] : minX;
-        maxX = (arr[i][0] > maxX || maxX == null) ? arr[i][0] : maxX;
-        minY = (arr[i][1] < minY || minY == null) ? arr[i][1] : minY;
-        maxY = (arr[i][1] > maxY || maxY == null) ? arr[i][1] : maxY;
+    var center = function(arr) {
+      var minX, maxX, minY, maxY;
+      for (var i = 0; i < arr.length; i++) {
+        minX = arr[i][0] < minX || minX == null ? arr[i][0] : minX;
+        maxX = arr[i][0] > maxX || maxX == null ? arr[i][0] : maxX;
+        minY = arr[i][1] < minY || minY == null ? arr[i][1] : minY;
+        maxY = arr[i][1] > maxY || maxY == null ? arr[i][1] : maxY;
+      }
+      return [(minX + maxX) / 2, (minY + maxY) / 2];
+    };
+    console.log(center(pushed));
+    let centerPoint = center(pushed);
+      const hoverRotate = css`
+    transform: rotate(0deg);
+    -ms-transform-origin: ${centerPoint[0]}px ${centerPoint[1]}px;
+    -webkit-transform-origin: ${centerPoint[0]}px ${centerPoint[1]}px;
+    transform: ${centerPoint[0]}px ${centerPoint[1]}px;
+    transition: all 0.25s;
+    &:hover {
+      transform: rotate(72deg);
+      -ms-transform-origin: ${centerPoint[0]}px ${centerPoint[1]}px;
+      -webkit-transform-origin: ${centerPoint[0]}px ${centerPoint[1]}px;
+      transform: ${centerPoint[0]}px ${centerPoint[1]}px;
     }
-    return [(minX + maxX) / 2, (minY + maxY) / 2];
-}
-console.log(center(pushed))
-let centerPoint = center(pushed)
-penta.attribute("cx", `${centerPoint[0]}`)
-penta.attribute("cy", `${centerPoint[1]}`)
-penta.attribute("id", "testID")
-penta.attribute("class", `${hoverRotate}`)
-console.log(`penta center: ${centerPoint[0]}`);
+  `;
+    penta.attribute("cx", `${centerPoint[0]}`);
+    penta.attribute("cy", `${centerPoint[1]}`);
+    penta.attribute("id", "testID");
+    penta.attribute("class", `${hoverRotate}`);
+    console.log(`penta center: ${centerPoint[0]}`);
 
-console.log(penta.center)
+    console.log(penta.center);
   }
-
-
-
 </script>
 
 <style lang="scss">
@@ -149,19 +144,18 @@ console.log(penta.center)
     border: 1px solid black;
     box-shadow: 0px 0px 2px 2px rgba(0, 0, 0, 0.75);
     & svg {
-      transition: all .25s;
+      transition: all 0.25s;
       & polygon {
         transform: rotate(0deg);
-
       }
     }
     &:hover svg {
       stroke: red;
       stroke-width: 10;
-      
+
       & polygon {
         transform: rotate(72deg);
-                &:hover {
+        &:hover {
           stroke-width: 1;
           stroke: blue;
         }
@@ -179,7 +173,7 @@ console.log(penta.center)
     height: 100%;
     top: 0;
     left: 0;
-    transition: all .25s;
+    transition: all 0.25s;
     & polygon {
       transform: rotate(0deg);
     }
