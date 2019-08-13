@@ -1,7 +1,7 @@
 <script>
   // import { css } from 'emotion'
   import { onMount } from "svelte";
-  import { coords } from "./stores.js";
+  import { polygonPoints } from "./stores.js";
   import { Polygon } from "./polygon.js";
   import { findPolygonPoint } from "./findPolygonPoint.svelte";
   import { writable } from "svelte/store";

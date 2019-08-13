@@ -1,7 +1,7 @@
 <script>
   // import { css } from 'emotion'
   import { onMount } from "svelte";
-  import { coords } from "./stores.js";
+  import { polygonPoints, polygonOrigin } from "./stores.js";
   import { Polygon } from "./polygon.js";
   import { findPolygonPoint } from "./findPolygonPoint.svelte";
   import { writable } from "svelte/store";
@@ -14,11 +14,12 @@
   let points = 5;
   let distance = 140;
   // let polygonPointsArray = []
+  let origin
 
   let polygonPointsArray;
-  const unsubscribe = coords.subscribe(value => {
-    polygonPointsArray = value;
-  });
+  // const unsubscribe = polygonPoints.subscribe(value => {
+  //   polygonPointsArray = value;
+  // });
 
   onMount(() => {
     let svg = document.getElementById("pentagons");
@@ -30,27 +31,21 @@
   }
 
   export function createPolygonAtClick(e) {
+    console.log(`e.target.nodeName: ${e.target.nodeName}`);
+    let node = e.target.nodeName
+    node === 'svg' ? e : e = e.EventTarget.parentNode
+    
     let svg = document.getElementById("pentagons");
     let polygon = svg.childNodes[0];
-    coords.set([]);
-    // polygonPointsArray = [];
+    polygonPoints.set([]);
     let iteration = points;
 
-    // code to generate svg centered on click
     let rect = e.target.getBoundingClientRect();
-    // x = e.x - rect.left - distance / 2;
-    // y = e.y - rect.top + distance;
     x = e.x - rect.left;
     y = e.y - rect.top;
     let radius = distance / (2 * Math.sin(toDegrees(180)));
-    console.log(`Math.sin(toDegrees(180 / 5)): ${Math.sin(toDegrees(180))}`);
-    
-    // let radius = (distance / 1.17557);
-    // let newX = Math.round(Math.cos((-90 * Math.PI) / 180) * radius + x);
     let newX = x
     let newY = y - radius;
-
-    // end code to generate svg centered on click
 
     console.log(`createPolygonAtClick:
      target.x ${e.x} target.y ${e.y} 
@@ -58,10 +53,9 @@
      calculated x ${x} calculated y ${y}
      newX ${newX} newY ${newY}
      and e:`);
-    // confirmed my calculated x and y are at click relative to parent .svg-card
+
     console.log(e);
     let pushed = [];
-    // console.log(`inside createPolygonAtClick for loop: findPolygonPoint returns: `);
 
     console.log(`radius !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!: ${radius}`);
     let peak = [x, y + radius];
@@ -77,24 +71,15 @@
       points,
       distance,
       iteration,
-      polygonPointsArray,
+      $polygonPoints,
       pushed
     );
 
-    // console.log("polygonPointsArray");
-    // console.log(polygonPointsArray);
-    polygonPointsArray.forEach(point => {
-      // console.log(`point: ${point}`);
-      // console.log(point);
-      // console.log(`${point.x},${point.y}`);
-    });
-
-    let mapped = polygonPointsArray.map(point => [`${point.x},${point.y}`]);
+    let mapped = $polygonPoints.map(point => [`${point.x},${point.y}`]);
     console.log(`mapped: ${mapped}`);
     console.log(`pushed: ${pushed}`);
 
     let penta = new Polygon();
-    // penta.points(polygonPointsArray, polygonPointsArray.length);
     penta.points(mapped, mapped.length);
 
     let elX = svg.parentNode.offsetWidth;
@@ -112,28 +97,12 @@
     // );
     // console.log(`!!!!!!!!!!!!!!!!!!!!!!!!!!!!! hueX ${hueX} hueY ${hueY}`);
 
-    // console.log(polygonPointsArray.length);
-    // console.log("penta");
-    // console.log(penta);
     svg.appendChild(penta.node);
     console.log(`mapped: ${mapped}`);
 
     console.log(mapped);
     console.log(pushed);
-    // console.log("penta.points");
-    // console.log(penta.points);
-    var center = function(arr) {
-      var minX, maxX, minY, maxY;
-      for (var i = 0; i < arr.length; i++) {
-        minX = arr[i][0] < minX || minX == null ? arr[i][0] : minX;
-        maxX = arr[i][0] > maxX || maxX == null ? arr[i][0] : maxX;
-        minY = arr[i][1] < minY || minY == null ? arr[i][1] : minY;
-        maxY = arr[i][1] > maxY || maxY == null ? arr[i][1] : maxY;
-      }
-      return [(minX + maxX) / 2, (minY + maxY) / 2];
-    };
-    console.log(center(pushed));
-    let centerPoint = center(pushed);
+
     newY = newY + radius;
     const hoverRotate = css`
       transform: rotate(0deg);
@@ -177,6 +146,7 @@
       transition: all 0.25s;
       // z-index: -1;
       & polygon {
+        z-index: -1;
         transform: rotate(0deg);
       }
     }
