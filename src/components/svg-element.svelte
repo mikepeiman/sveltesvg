@@ -5,6 +5,16 @@
   import { Polygon } from "./polygon.js";
   import { findPolygonPoint } from "./findPolygonPoint.svelte";
   import { writable } from "svelte/store";
+import emotion from 'emotion/dist/emotion.umd.min.js';
+
+const { css } = emotion;
+
+export const hoverRotate = css`
+  transform: rotate(0deg);
+  transition: all .25s;
+  &:hover {
+    transform: rotate(72deg);
+    }`
 
   $: x = 0;
   $: y = 0;
@@ -19,12 +29,8 @@
 
   onMount(() => {
     let svg = document.getElementById("pentagons");
-    let polygon = document.createElementNS(
-      "http://www.w3.org/2000/svg",
-      "polygon"
-    );
     console.log("mounted");
-    svg.appendChild(polygon);
+
   });
 
   export function createPolygonAtClick(e) {
@@ -42,7 +48,7 @@
 
     console.log(`createPolygonAtClick x ${x}, y ${y}, and e:`);
     console.log(e);
-
+  let pushed = []
     // console.log(`inside createPolygonAtClick for loop: findPolygonPoint returns: `);
     findPolygonPoint(
       x,
@@ -51,7 +57,8 @@
       points,
       distance,
       iteration,
-      polygonPointsArray
+      polygonPointsArray,
+      pushed
     );
 
     console.log("polygonPointsArray");
@@ -64,8 +71,11 @@
       
       
     })
+  
+    
     let mapped = polygonPointsArray.map(point => [`${point.x},${point.y}`])
     console.log(`mapped: ${mapped}`);
+    console.log(`pushed: ${pushed}`);
     
 
     let penta = new Polygon();
@@ -91,13 +101,40 @@
     // console.log("penta");
     // console.log(penta);
     svg.appendChild(penta.node);
-
+    console.log(`mapped: ${mapped}`);
+    
+console.log(mapped)
+console.log(pushed)
     // console.log("penta.points");
     // console.log(penta.points);
+        var center = function (arr)
+{
+    var minX, maxX, minY, maxY;
+    for (var i = 0; i < arr.length; i++)
+    {
+        minX = (arr[i][0] < minX || minX == null) ? arr[i][0] : minX;
+        maxX = (arr[i][0] > maxX || maxX == null) ? arr[i][0] : maxX;
+        minY = (arr[i][1] < minY || minY == null) ? arr[i][1] : minY;
+        maxY = (arr[i][1] > maxY || maxY == null) ? arr[i][1] : maxY;
+    }
+    return [(minX + maxX) / 2, (minY + maxY) / 2];
+}
+console.log(center(pushed))
+let centerPoint = center(pushed)
+penta.attribute("cx", `${centerPoint[0]}`)
+penta.attribute("cy", `${centerPoint[1]}`)
+penta.attribute("id", "testID")
+penta.attribute("class", `${hoverRotate}`)
+console.log(`penta center: ${centerPoint[0]}`);
+
+console.log(penta.center)
   }
+
+
+
 </script>
 
-<style>
+<style lang="scss">
   .svg-card {
     background: none;
     position: relative;
@@ -111,6 +148,25 @@
     /* border: 2px solid rgba(75,95,255,0.5); */
     border: 1px solid black;
     box-shadow: 0px 0px 2px 2px rgba(0, 0, 0, 0.75);
+    & svg {
+      transition: all .25s;
+      & polygon {
+        transform: rotate(0deg);
+
+      }
+    }
+    &:hover svg {
+      stroke: red;
+      stroke-width: 10;
+      
+      & polygon {
+        transform: rotate(72deg);
+                &:hover {
+          stroke-width: 1;
+          stroke: blue;
+        }
+      }
+    }
   }
   h1 {
     text-align: center;
@@ -123,13 +179,20 @@
     height: 100%;
     top: 0;
     left: 0;
-    z-index: -1;
+    transition: all .25s;
+    & polygon {
+      transform: rotate(0deg);
+    }
+  }
+
+  svg:hover polygon {
+    transform: rotate(72deg);
   }
 
   #pentagons {
-    fill: rgba(75, 125, 175, 0.75);
-    stroke: rgba(75, 125, 175, 1);
-    stroke-width: 5;
+    // fill: rgba(75, 125, 175, 0.75);
+    // stroke: rgba(75, 125, 175, 1);
+    // stroke-width: 5;
   }
 </style>
 

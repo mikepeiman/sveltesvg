@@ -13,7 +13,9 @@
   },
   "dependencies": {
     "emotion": "^10.0.14",
-    "sirv-cli": "^0.4.4"
+    "node-sass": "^4.12.0",
+    "sirv-cli": "^0.4.4",
+    "svelte-preprocess-sass": "^0.2.0"
   },
   "scripts": {
     "build": "rollup -c",

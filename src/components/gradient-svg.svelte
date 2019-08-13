@@ -12,12 +12,13 @@
     let w = parseFloat((bounds.width).toFixed(5))
     let h = parseFloat((bounds.height).toFixed(5))
     console.log(w,h);
-    
-    
   }
+
+
+
 </script>
 
-<style>
+<style lang="scss">
   .svg-card {
     background: none;
     position: relative;
@@ -25,12 +26,30 @@
     padding: 2rem;
     margin: 2rem;
     width: 50%;
-    height: 250px;
+    height: 20vh;
     justify-self: center;
     align-self: center;
     /* border: 2px solid rgba(75,95,255,0.5); */
     border: 1px solid black;
     box-shadow: 0px 0px 2px 2px rgba(0, 0, 0, 0.75);
+    & svg {
+      transition: all .25s;
+      & polygon {
+        transform: rotate(0deg);
+
+      }
+    }
+    &:hover svg {
+      stroke: red;
+      stroke-width: 10;
+      
+      &polygon {
+        transform: rotate(72deg);
+                &:hover {
+          stroke-width: 1;
+        }
+      }
+    }
   }
   h1 {
     text-align: center;

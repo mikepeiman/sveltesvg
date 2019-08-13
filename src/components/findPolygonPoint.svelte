@@ -1,6 +1,6 @@
 <script context="module">
   import { coords } from "./stores.js";
-  export function findPolygonPoint(x, y, svgElement, points, distance, iteration, polygonPointsArray) {
+  export function findPolygonPoint(x, y, svgElement, points, distance, iteration, polygonPointsArray, pushed) {
       let svg = svgElement;
       let polygon = svg.childNodes[0];
       let angle = (360 / points) * iteration;
@@ -22,11 +22,12 @@
       console.log(`x ${x} and y ${y}: newX ${newX}, newY ${newY}`);
       console.log(`polygonPointsArray = ${polygonPointsArray}`);
       console.log(polygonPointsArray);
-      
+      pushed.push([x,y])
       let point = svg.createSVGPoint();
       point.x = x;
       point.y = y;
+
       polygonPointsArray = [...polygonPointsArray, point]
-      findPolygonPoint(newX, newY, svg, points, distance, iteration - 1, polygonPointsArray);
+      findPolygonPoint(newX, newY, svg, points, distance, iteration - 1, polygonPointsArray, pushed);
     }
 </script>

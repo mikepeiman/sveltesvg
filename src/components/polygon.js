@@ -12,8 +12,8 @@
       function build(arg) {
         let res = [];
         for (let i = 0, l = arg.length; i < l; i++) {
-          console.log(`inside of Polygon.build(): res ${res}`);
-          console.log(res)
+          // console.log(`inside of Polygon.build(): res ${res}`);
+          // console.log(res)
           res.push(arg[i].join(","));
         }
         return res.join(" ");
@@ -35,11 +35,11 @@
   
       this.points = function(points, l) {
         for (let i = 0; i < l; i += 1) {
-          console.log(
-            `i ${i} l ${l} this.points arguments[i] ${points[i]}, points[i+1] ${
-              points[i + 1]
-            } and pointsList: ${pointsList}`
-          );
+          // console.log(
+          //   `i ${i} l ${l} this.points arguments[i] ${points[i]}, points[i+1] ${
+          //     points[i + 1]
+          //   } and pointsList: ${pointsList}`
+          // );
           if (points[i + 1] !== undefined) {
             pointsList.push([points[i], points[i + 1]]);
           }
