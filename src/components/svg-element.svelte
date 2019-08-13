@@ -12,9 +12,9 @@
   $: x = 0;
   $: y = 0;
   let points = 5;
-  let distance = 140;
+  let distance = 500;
   // let polygonPointsArray = []
-  let origin
+  let origin;
 
   let polygonPointsArray;
   // const unsubscribe = polygonPoints.subscribe(value => {
@@ -27,24 +27,71 @@
   });
 
   function toDegrees(angle) {
-    return angle * (180 / Math.PI)
+    return angle * (180 / Math.PI);
   }
 
   export function createPolygonAtClick(e) {
-    console.log(`e.target.nodeName: ${e.target.nodeName}`);
-    let node = e.target.nodeName
-    node === 'svg' ? e : e = e.EventTarget.parentNode
-    
+    console.log(e);
+
+
+// Mouse position in parent element regardless of clicking on children
+// code copied from this https://stackoverflow.com/questions/16154857/how-can-i-get-the-mouse-coordinates-relative-to-a-parent-div-javascript
+// thanks to GitaarLAB
+
+    var m_posx = 0,
+      m_posy = 0,
+      e_posx = 0,
+      e_posy = 0,
+      obj = this;
+    //get mouse position on document crossbrowser
+    if (!e) {
+      e = window.event;
+    }
+    if (e.pageX || e.pageY) {
+      m_posx = e.pageX;
+      m_posy = e.pageY;
+    } else if (e.clientX || e.clientY) {
+      m_posx =
+        e.clientX +
+        document.body.scrollLeft +
+        document.documentElement.scrollLeft;
+      m_posy =
+        e.clientY +
+        document.body.scrollTop +
+        document.documentElement.scrollTop;
+    }
+    //get parent element position in document
+    if (obj.offsetParent) {
+      do {
+        e_posx += obj.offsetLeft;
+        e_posy += obj.offsetTop;
+      } while ((obj = obj.offsetParent));
+    }
+    // mouse position minus elm position is mouseposition relative to element:
+    let click = [];
+    click[0] = m_posx - e_posx;
+    click[1] = m_posy - e_posy;
+
+// end code from https://stackoverflow.com/questions/16154857/how-can-i-get-the-mouse-coordinates-relative-to-a-parent-div-javascript
+
+    // let node = e.target.nodeName;
+
+    // if (node === "polygon") {
+    //   e = e.target.parentNode;
+    // }
+
     let svg = document.getElementById("pentagons");
     let polygon = svg.childNodes[0];
     polygonPoints.set([]);
     let iteration = points;
 
-    let rect = e.target.getBoundingClientRect();
-    x = e.x - rect.left;
-    y = e.y - rect.top;
+    // let rect = e.target.getBoundingClientRect();
+    // x = e.x - rect.left;
+    // y = e.y - rect.top;
+    x = click[0]
+    y = click[1]
     let radius = distance / (2 * Math.sin(toDegrees(180)));
-    let newX = x
+    let newX = x;
     let newY = y - radius;
 
     console.log(`createPolygonAtClick:
@@ -54,7 +101,6 @@
      newX ${newX} newY ${newY}
      and e:`);
 
-    console.log(e);
     let pushed = [];
 
     console.log(`radius !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!: ${radius}`);
@@ -90,20 +136,13 @@
     let hueX = x * hueFactorX;
     let hueY = y * hueFactorY;
     let alphaY = (y * aFactorY).toFixed(2);
-    // console.log(`alpha factor: ${aFactorY}, alphaY ${alphaY}`);
-    penta.attribute("fill", `hsla(${hueX},100%,50%,${alphaY})`);
-    // console.log(
-    //   `!!!!!!!!!!!!!!!!!!!!!!!!!!!!! svg parent width ${elX} ${hueFactorX}, ${elY} ${hueFactorY}`
-    // );
-    // console.log(`!!!!!!!!!!!!!!!!!!!!!!!!!!!!! hueX ${hueX} hueY ${hueY}`);
 
+    penta.attribute("fill", `hsla(${hueX},100%,50%,${alphaY})`);
     svg.appendChild(penta.node);
     console.log(`mapped: ${mapped}`);
 
-    console.log(mapped);
-    console.log(pushed);
-
-    newY = newY + radius;
+    // newX = newX - 5
+    newY = newY + radius - (distance/40);
     const hoverRotate = css`
       transform: rotate(0deg);
       -ms-transform-origin: ${newX}px ${newY}px;
@@ -117,7 +156,7 @@
         transform: ${newX}px ${newY}px;
       }
     `;
-    //          
+    //
     penta.attribute("cx", `${newX}`);
     penta.attribute("cy", `${newY}`);
     penta.attribute("id", "testID");
@@ -136,7 +175,7 @@
     padding: 2rem;
     margin: 2rem;
     width: 50%;
-    height: 20vh;
+    height: 100vh;
     justify-self: center;
     align-self: center;
     /* border: 2px solid rgba(75,95,255,0.5); */
@@ -151,8 +190,8 @@
       }
     }
     &:hover svg {
-      stroke: red;
-      stroke-width: 10;
+      // stroke: red;
+      // stroke-width: 10;
 
       & polygon {
         transform: rotate(72deg);
