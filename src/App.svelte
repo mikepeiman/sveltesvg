@@ -2,6 +2,7 @@
   import Card from './components/card.svelte';
   import ManySVGs from './components/svg-element.svelte';
   import GradientSVG from './components/gradient-svg.svelte';
+  import Palette from './pages/palette.svelte';
 </script>
 
 <style>
@@ -15,7 +16,6 @@
 	}
 </style>
 
-<Card headline="This is a card component." />
-<Card headline="No, this is!" />
 <ManySVGs headline="Click inside here to generate a polygon" bg="rgba(255,55,0,1)" />
 <GradientSVG />
+<Card headline="This is a card component." />

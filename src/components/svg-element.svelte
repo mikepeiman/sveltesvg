@@ -12,7 +12,7 @@
   $: x = 0;
   $: y = 0;
   let points = 5;
-  let distance = 150;
+  let distance = 50;
   // let polygonPointsArray = []
   let origin;
 
@@ -146,7 +146,7 @@
       transform: ${newX}px ${newY}px;
       transition: all 0.25s;
       &:hover {
-        transform: rotate(72deg);
+        transform: rotate(288deg);
         -ms-transform-origin: ${newX}px ${newY}px;
         -webkit-transform-origin: ${newX}px ${newY}px;
         transform: ${newX}px ${newY}px;
@@ -171,7 +171,7 @@
     padding: 2rem;
     margin: 2rem;
     width: 50%;
-    height: 100vh;
+    height: 50vh;
     justify-self: center;
     align-self: center;
     /* border: 2px solid rgba(75,95,255,0.5); */
